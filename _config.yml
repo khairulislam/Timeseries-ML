@@ -1,14 +1,16 @@
 # Book settings
 # Learn more at https://jupyterbook.org/customize/config.html
 
-title: Machine Learning for Time Series Dataset
-author: MD Khairul Islam
-logo: images/TimeSeries.jpg
+title: Machine Learning for Time Series
+author: Md Khairul Islam
+email: khairulislam@virginia.edu
+logo: images/logo.png
+description: Machine Learning Ebook for Time Series Applications
 
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: force
+  execute_notebooks: 'off'
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -30,3 +32,8 @@ repository:
 html:
   use_issues_button: true
   use_repository_button: true
+
+sphinx:
+  recursive_update: true
+  config: 
+    bibtex_reference_style: author_year  # or label, super, \supercite

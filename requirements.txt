@@ -1,0 +1,7 @@
+jupyter-book==0.15.1
+matplotlib
+numpy
+docutils==0.17.1
+sphinx==5
+sktime
+# pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
