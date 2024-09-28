@@ -1,6 +1,6 @@
 jupyter-book==0.15.1
 matplotlib
-numpy
+numpy<2 # https://stackoverflow.com/questions/78634235/numpy-dtype-size-changed-may-indicate-binary-incompatibility-expected-96-from
 docutils==0.17.1
 sphinx==5
 sktime

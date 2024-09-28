@@ -17,7 +17,7 @@ Time series data needs to be ordered over time and based on the input data avail
 Based on which tasks they are performing time series can be of the following categories:
 
 * *Classification*: Predict a categorical target class for a time series.
-* *Regression*:  Predict a continuous target value.
+* *Regression*: Predict a continuous target value.
 * *Forecasting*: Predict future values of the input series. The future timesteps are called `Horizon`. When the number of future timesteps to predict is > 1, it is called a `Multi-horizon` problem.
 * *Clustering*: Discover groups consisting of instances with similar time series.
 * *Annotation*: This focuses on representation learning to perform outlier detection, anomaly detection, change point detection and segmentation.

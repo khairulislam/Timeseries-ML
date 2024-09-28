@@ -9,9 +9,17 @@ parts:
     - file: pages/introduction/categories
     - file: pages/introduction/library
 
+- caption: Classification
+  chapters:
+  - file: pages/classification/overview
+
+- caption: Regression
+  chapters:
+  - file: pages/regression/overview
+
 - caption: Forecasting
   chapters:
-  - file: pages/forecasting/airline
+  - file: pages/forecasting/overview
 
 - caption: Conclusion
   chapters:
