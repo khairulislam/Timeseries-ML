@@ -1,4 +1,4 @@
-# What is Time Series
+# Definitions
 
 A time series is a collection of data points that are recorded at regular intervals over time. Time series data can be used to analyze patterns and trends, and to make predictions about the future.
 

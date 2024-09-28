@@ -21,6 +21,10 @@ parts:
   chapters:
   - file: pages/forecasting/overview
 
+- caption: Clustering
+  chapters:
+  - file: pages/clustering/overview
+
 - caption: Conclusion
   chapters:
   - file: pages/conclusion
