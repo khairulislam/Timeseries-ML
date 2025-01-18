@@ -13,14 +13,12 @@ parts:
   chapters:
   - file: pages/classification/overview
 
-- caption: Regression
-  chapters:
-  - file: pages/regression/overview
-
 - caption: Forecasting
   chapters:
   - file: pages/forecasting/overview
+  - file: pages/forecasting/regression-sktime
   - file: pages/forecasting/dart-Transformer-examples.ipynb
+  - file: pages/forecasting/dart-RegressionModel
 
 - caption: Clustering
   chapters:

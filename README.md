@@ -7,10 +7,10 @@ Machine Learning hands on book for Time series data.
   - [Libraries](./pages/introduction/library.md)
 - Classification
   - [TimeSeriesForestClassifier](./pages/classification/overview.ipynb)
-- Regression
-  - [KNeighborsTimeSeriesRegressor](./pages/regression/overview.ipynb)
 - Forecasting
   - [ThetaForecaster](./pages/forecasting/overview.ipynb)
+  - [KNeighborsTimeSeriesRegressor](./pages/forecasting/regression-sktime.ipynb)
+  - [Regression Models - Dart](./pages/forecasting/dart-RegressionModel.ipynb)
   - [Transformers](./pages/forecasting/dart-Transformer-examples.ipynb)
 - Clustering
   - [TimeSeriesKMeans](./pages/clustering/overview.ipynb)
