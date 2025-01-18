@@ -1,0 +1,937 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Hierarchical Reconciliation - Example on the Australian Tourism Dataset &#8212; Machine Learning for Time Series</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pages/dart-hierarchical-reconciliation';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Transfer Learning for Time Series Forecasting with Darts" href="transfer-learning.html" />
+    <link rel="prev" title="Overview" href="clustering/overview.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/logo.png" class="logo__image only-light" alt="Machine Learning for Time Series - Home"/>
+    <img src="../_static/logo.png" class="logo__image only-dark pst-js-only" alt="Machine Learning for Time Series - Home"/>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro.html">
+                    Time Series Machine Learning
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">Introduction</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction/categories.html">Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="introduction/library.html">Libraries</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Classification</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="classification/overview.html">Overview</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Regression</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="regression/overview.html">Overview</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Forecasting</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="forecasting/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="forecasting/dart-Transformer-examples.html">Transformer Model</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Clustering</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="clustering/overview.html">Overview</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Hierarchical</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Hierarchical Reconciliation - Example on the Australian Tourism Dataset</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Transfer Learning</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="transfer-learning.html">Transfer Learning for Time Series Forecasting with Darts</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Conclusion</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="conclusion.html">Summary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/khairulislam/Timeseries-ML" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/khairulislam/Timeseries-ML/issues/new?title=Issue%20on%20page%20%2Fpages/dart-hierarchical-reconciliation.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/pages/dart-hierarchical-reconciliation.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Hierarchical Reconciliation - Example on the Australian Tourism Dataset</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-data">Loading Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-hierarchy">Inspecting the Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-the-hierarchy">Encoding the Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-using-a-multivariate-model">Forecasting Using a Multivariate Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconciling-forecasts">Reconciling Forecasts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-forecasting-components-independently">Alternative: Forecasting Components Independently</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="hierarchical-reconciliation-example-on-the-australian-tourism-dataset">
+<h1>Hierarchical Reconciliation - Example on the Australian Tourism Dataset<a class="headerlink" href="#hierarchical-reconciliation-example-on-the-australian-tourism-dataset" title="Link to this heading">#</a></h1>
+<p>In this notebook we demonstrate hierarchical reconciliation. We will use the Australian tourism dataset (originally coming from <a class="reference external" href="https://robjhyndman.com/publications/hierarchical-tourism/">here</a>), which contains monthly tourism numbers, disaggrated by region, travel reason and city/non-city type of tourism.</p>
+<p>We will use techniques presented in Rob Hyndman’s book <a class="reference external" href="https://otexts.com/fpp3/hierarchical.html">here</a>, and we will see that reconciling forecasts can be done in a few lines of code using Darts.</p>
+<p>First, some imports:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">product</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">darts</span><span class="w"> </span><span class="kn">import</span> <span class="n">concatenate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">darts.dataprocessing.transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">MinTReconciliator</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">darts.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">AustralianTourismDataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">darts.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">mae</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">darts.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">LinearRegressionModel</span><span class="p">,</span> <span class="n">Theta</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="loading-data">
+<h2>Loading Data<a class="headerlink" href="#loading-data" title="Link to this heading">#</a></h2>
+<p>Below, we load a single <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code>, which is multivariate (i.e., contains multiple components). We simply use the <code class="docutils literal notranslate"><span class="pre">AustralianTourismDataset</span></code> Darts dataset for simplicity, but we could also use <code class="docutils literal notranslate"><span class="pre">TimeSeries.from_dataframe(df)</span></code>, providing a DataFrame <code class="docutils literal notranslate"><span class="pre">df</span></code> containing one column per component and one row per timestamp.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tourism_series</span> <span class="o">=</span> <span class="n">AustralianTourismDataset</span><span class="p">()</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>This series contains several components:</p>
+<ul class="simple">
+<li><p>One component named <code class="docutils literal notranslate"><span class="pre">&quot;Total&quot;</span></code>,</p></li>
+<li><p>One component per region (<code class="docutils literal notranslate"><span class="pre">&quot;NSW&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;VIC&quot;</span></code>, etc)</p></li>
+<li><p>One component per tourism reason (<code class="docutils literal notranslate"><span class="pre">&quot;Hol&quot;</span></code> for holiday, <code class="docutils literal notranslate"><span class="pre">&quot;Bus&quot;</span></code> for business, etc)</p></li>
+<li><p>One component per (region, reason) pair (named <code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">hol&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">bus&quot;</span></code>, etc)</p></li>
+<li><p>One component per (region, reason, &lt;city&gt;) tuple, where &lt;city&gt; is either <code class="docutils literal notranslate"><span class="pre">&quot;city&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;noncity&quot;</span></code>. So these are components named <code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">hol</span> <span class="pre">-</span> <span class="pre">city&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">hol</span> <span class="pre">-</span> <span class="pre">noncity&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">bus</span> <span class="pre">-</span> <span class="pre">city&quot;</span></code>, etc.</p></li>
+</ul>
+<p>Let’s plot a few of those:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tourism_series</span><span class="p">[[</span><span class="s2">&quot;Total&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - bus&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - hol&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - bus - city&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;time&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/94a7f3ec4a804812054f1399172e18ceb7b6b66c9c116f64783cafb6d2dad070.png" src="../_images/94a7f3ec4a804812054f1399172e18ceb7b6b66c9c116f64783cafb6d2dad070.png" />
+</div>
+</div>
+</section>
+<section id="inspecting-the-hierarchy">
+<h2>Inspecting the Hierarchy<a class="headerlink" href="#inspecting-the-hierarchy" title="Link to this heading">#</a></h2>
+<p>Some of these components add up in certain ways. For instance, the sum of the holiday tourism done in New South Wales can be decomposed as the sum of “city” and “noncity” holiday New South Wales tourism:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sum_city_noncity</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">tourism_series</span><span class="p">[</span><span class="s2">&quot;NSW - hol - city&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">tourism_series</span><span class="p">[</span><span class="s2">&quot;NSW - hol - noncity&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">sum_city_noncity</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;NSW - hol, city+noncity&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+<span class="n">tourism_series</span><span class="p">[</span><span class="s2">&quot;NSW - hol&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;time&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/964c32e8a82d4b363eedc30124a76d4df63b5d6758f59496da0ffe24ee60aceb.png" src="../_images/964c32e8a82d4b363eedc30124a76d4df63b5d6758f59496da0ffe24ee60aceb.png" />
+</div>
+</div>
+<p>Similarly, both the sum over regions and over reasons add up to the total:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reasons</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Hol&quot;</span><span class="p">,</span> <span class="s2">&quot;VFR&quot;</span><span class="p">,</span> <span class="s2">&quot;Bus&quot;</span><span class="p">,</span> <span class="s2">&quot;Oth&quot;</span><span class="p">]</span>
+<span class="n">regions</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;NSW&quot;</span><span class="p">,</span> <span class="s2">&quot;VIC&quot;</span><span class="p">,</span> <span class="s2">&quot;QLD&quot;</span><span class="p">,</span> <span class="s2">&quot;SA&quot;</span><span class="p">,</span> <span class="s2">&quot;WA&quot;</span><span class="p">,</span> <span class="s2">&quot;TAS&quot;</span><span class="p">,</span> <span class="s2">&quot;NT&quot;</span><span class="p">]</span>
+<span class="n">city_labels</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;city&quot;</span><span class="p">,</span> <span class="s2">&quot;noncity&quot;</span><span class="p">]</span>
+
+<span class="n">tourism_series</span><span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+<span class="n">tourism_series</span><span class="p">[</span><span class="n">regions</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;sum regions&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span>
+<span class="n">tourism_series</span><span class="p">[</span><span class="n">reasons</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;sum reasons&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;time&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/aa85b74eb52409fc2c1cfffc876ae6f8244be3f65f0256dae5de3f5acfa65a13.png" src="../_images/aa85b74eb52409fc2c1cfffc876ae6f8244be3f65f0256dae5de3f5acfa65a13.png" />
+</div>
+</div>
+<p>So overall our hierarchy looks as follows:</p>
+<p><img alt="image.png" src="pages/attachment:de74d4d1-1a95-41c4-9a21-99199060ad36.png" /></p>
+</section>
+<section id="encoding-the-hierarchy">
+<h2>Encoding the Hierarchy<a class="headerlink" href="#encoding-the-hierarchy" title="Link to this heading">#</a></h2>
+<p>We will now encode the hierarchy itself in a way that Darts understands. This is simple: the hierarchy is simply represented as a <code class="docutils literal notranslate"><span class="pre">dict</span></code>, where the keys are component names, and the values are lists containing this component’s parent(s) in the hierarchy.</p>
+<p>For example, referring to the figure above:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;Hol&quot;</span></code> is mapped to <code class="docutils literal notranslate"><span class="pre">[&quot;Total&quot;]</span></code>, as it is a child of <code class="docutils literal notranslate"><span class="pre">&quot;Total&quot;</span></code> in the left tree.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">hol&quot;</span></code> is mapped to <code class="docutils literal notranslate"><span class="pre">[&quot;Hol&quot;,</span> <span class="pre">&quot;NSW&quot;]</span></code>, as it is a child of both <code class="docutils literal notranslate"><span class="pre">&quot;Hol&quot;</span></code> (in the left tree), and <code class="docutils literal notranslate"><span class="pre">&quot;NSW&quot;</span></code> (in the right tree).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">bus</span> <span class="pre">-</span> <span class="pre">city&quot;</span></code> is mapped to <code class="docutils literal notranslate"><span class="pre">[&quot;NSW</span> <span class="pre">-</span> <span class="pre">bus&quot;]</span></code> as it is a child of <code class="docutils literal notranslate"><span class="pre">&quot;NSW</span> <span class="pre">-</span> <span class="pre">bus&quot;</span></code> in the right tree.</p></li>
+<li><p>etc…</p></li>
+</ul>
+<p>So all components except <code class="docutils literal notranslate"><span class="pre">&quot;Total&quot;</span></code> will appear as a key in the hierarchy dictionary.
+As we have quite a few components (96), we will not build this dict by hand, but rather programmatically:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">hierarchy</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+<span class="c1"># Fill in grouping by reason</span>
+<span class="k">for</span> <span class="n">reason</span> <span class="ow">in</span> <span class="n">reasons</span><span class="p">:</span>
+    <span class="n">hierarchy</span><span class="p">[</span><span class="n">reason</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">]</span>
+
+<span class="c1"># Fill in grouping by region</span>
+<span class="k">for</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">regions</span><span class="p">:</span>
+    <span class="n">hierarchy</span><span class="p">[</span><span class="n">region</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">]</span>
+
+<span class="c1"># Fill in grouping by (region, reason)</span>
+<span class="k">for</span> <span class="n">region</span><span class="p">,</span> <span class="n">reason</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">reasons</span><span class="p">):</span>
+    <span class="n">hierarchy</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">reason</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">reason</span><span class="p">,</span> <span class="n">region</span><span class="p">]</span>
+
+<span class="c1"># Fill in grouping by (region, reason, &lt;city&gt;)</span>
+<span class="k">for</span> <span class="n">region</span><span class="p">,</span> <span class="n">reason</span><span class="p">,</span> <span class="n">city</span> <span class="ow">in</span> <span class="n">product</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">reasons</span><span class="p">,</span> <span class="n">city_labels</span><span class="p">):</span>
+    <span class="n">hierarchy</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">reason</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">city</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">region</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">reason</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As a sanity check, let’s see what a few of the components map to in the hierarchy:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Hol&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - hol&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - bus - city&quot;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">component</span><span class="si">}</span><span class="s2"> -&gt; </span><span class="si">{</span><span class="n">hierarchy</span><span class="p">[</span><span class="n">component</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Hol -&gt; [&#39;Total&#39;]
+NSW - hol -&gt; [&#39;Hol&#39;, &#39;NSW&#39;]
+NSW - bus - city -&gt; [&#39;NSW - bus&#39;]
+</pre></div>
+</div>
+</div>
+</div>
+<p>Good, that looks as expected.</p>
+<p>In Darts, hierarchies are a property of <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code> objects.
+We can now embed our hierarchy in our <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code>. We do this using the <code class="docutils literal notranslate"><span class="pre">with_hierarchy()</span></code> method, but we could also specify the hierarchy at the series construction; for instance providing a <code class="docutils literal notranslate"><span class="pre">hierarchy</span></code> to the <code class="docutils literal notranslate"><span class="pre">TimeSeries.from_dataframe()</span></code> factory method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tourism_series</span> <span class="o">=</span> <span class="n">tourism_series</span><span class="o">.</span><span class="n">with_hierarchy</span><span class="p">(</span><span class="n">hierarchy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="forecasting-using-a-multivariate-model">
+<h2>Forecasting Using a Multivariate Model<a class="headerlink" href="#forecasting-using-a-multivariate-model" title="Link to this heading">#</a></h2>
+<p>Now we have a multivariate time series, which contains the hierarchy information. Let’s split it in train / eval parts. We will keep the last 12 months as a validation set.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">val</span> <span class="o">=</span> <span class="n">tourism_series</span><span class="p">[:</span><span class="o">-</span><span class="mi">12</span><span class="p">],</span> <span class="n">tourism_series</span><span class="p">[</span><span class="o">-</span><span class="mi">12</span><span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Getting forecasts is now as easy as using one of Darts models supporting multivariate series:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">LinearRegressionModel</span><span class="p">(</span><span class="n">lags</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s look at our forecasts:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">components_to_show</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - bus&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - hol&quot;</span><span class="p">,</span> <span class="s2">&quot;NSW - bus - city&quot;</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">tourism_series</span><span class="p">[</span><span class="n">components_to_show</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">pred</span><span class="p">[</span><span class="n">components_to_show</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;time&#39;&gt;
+</pre></div>
+</div>
+<img alt="../_images/e104a5d82eca037959c6bb3da3f68504b0e5dfcc70842e7efd861b94c75ec148.png" src="../_images/e104a5d82eca037959c6bb3da3f68504b0e5dfcc70842e7efd861b94c75ec148.png" />
+</div>
+</div>
+<p>Let’s also compute the accuracy at the different levels (MAE, averaged over several components):</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># we pre-generate some of the components&#39; names</span>
+<span class="n">regions_reasons_comps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+    <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">product</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">reasons</span><span class="p">))</span>
+<span class="p">)</span>
+
+<span class="n">regions_reasons_city_comps</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
+    <span class="nb">map</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="si">}</span><span class="s2"> - </span><span class="si">{</span><span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">product</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="n">reasons</span><span class="p">,</span> <span class="n">city_labels</span><span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">measure_mae</span><span class="p">(</span><span class="n">pred</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_mae_on_subset</span><span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mean MAE on </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">mae</span><span class="p">(</span><span class="n">pred</span><span class="p">[</span><span class="n">subset</span><span class="p">],</span><span class="w"> </span><span class="n">val</span><span class="p">[</span><span class="n">subset</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">print_mae_on_subset</span><span class="p">([</span><span class="s2">&quot;Total&quot;</span><span class="p">],</span> <span class="s2">&quot;total&quot;</span><span class="p">)</span>
+    <span class="n">print_mae_on_subset</span><span class="p">(</span><span class="n">reasons</span><span class="p">,</span> <span class="s2">&quot;reasons&quot;</span><span class="p">)</span>
+    <span class="n">print_mae_on_subset</span><span class="p">(</span><span class="n">regions</span><span class="p">,</span> <span class="s2">&quot;regions&quot;</span><span class="p">)</span>
+    <span class="n">print_mae_on_subset</span><span class="p">(</span><span class="n">regions_reasons_comps</span><span class="p">,</span> <span class="s2">&quot;(region, reason)&quot;</span><span class="p">)</span>
+    <span class="n">print_mae_on_subset</span><span class="p">(</span><span class="n">regions_reasons_city_comps</span><span class="p">,</span> <span class="s2">&quot;(region, reason, city)&quot;</span><span class="p">)</span>
+
+
+<span class="n">measure_mae</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean MAE on total: 4116.85
+mean MAE on reasons: 1282.76
+mean MAE on regions: 807.04
+mean MAE on (region, reason): 314.63
+mean MAE on (region, reason, city): 191.40
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="reconciling-forecasts">
+<h2>Reconciling Forecasts<a class="headerlink" href="#reconciling-forecasts" title="Link to this heading">#</a></h2>
+<p>First, let’s see whether our current “raw” forecasts add up:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">plot_forecast_sums</span><span class="p">(</span><span class="n">pred_series</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+    <span class="n">pred_series</span><span class="p">[</span><span class="s2">&quot;Total&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;total&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">)</span>
+    <span class="n">pred_series</span><span class="p">[</span><span class="n">regions</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;sum of regions&quot;</span><span class="p">)</span>
+    <span class="n">pred_series</span><span class="p">[</span><span class="n">reasons</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;sum of reasons&quot;</span><span class="p">)</span>
+    <span class="n">pred_series</span><span class="p">[</span><span class="n">regions_reasons_comps</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sum of (region, reason) series&quot;</span>
+    <span class="p">)</span>
+    <span class="n">pred_series</span><span class="p">[</span><span class="n">regions_reasons_city_comps</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;sum of (region, reason, city) series&quot;</span>
+    <span class="p">)</span>
+
+    <span class="n">legend</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;best&quot;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">legend</span><span class="o">.</span><span class="n">get_frame</span><span class="p">()</span>
+    <span class="n">frame</span><span class="o">.</span><span class="n">set_facecolor</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+
+
+<span class="n">plot_forecast_sums</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/68146608e3890d977c4022a602b88aac05457cc2494505bdd8e70d40b46e25dd.png" src="../_images/68146608e3890d977c4022a602b88aac05457cc2494505bdd8e70d40b46e25dd.png" />
+</div>
+</div>
+<p>It seems that they don’t. So let’s reconcile them.
+We will use some transformers available in <code class="docutils literal notranslate"><span class="pre">darts.dataprocessing.transformers</span></code> to do that. These transformers can perform <em>posthoc</em> reconciliation (i.e., reconcile forecasts after they have been obtained). We have at our disposal the following methods:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">BottomUpReconciliator</span></code> performs bottom-up reconciliation, simply resetting each component in the hierarchy as the sum of its children components (<a class="reference external" href="https://unit8co.github.io/darts/generated_api/darts.dataprocessing.transformers.reconciliation.html#darts.dataprocessing.transformers.reconciliation.BottomUpReconciliator">API documentation</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">TopDownReconciliator</span></code> performs top-down reconciliation, which breaks down the aggregate forecasts down the hierarchy using historical proportions. This transformer requires calling <code class="docutils literal notranslate"><span class="pre">fit()</span></code> with the historical values (i.e., the training series) in order to learn these proportions (<a class="reference external" href="https://unit8co.github.io/darts/generated_api/darts.dataprocessing.transformers.reconciliation.html#darts.dataprocessing.transformers.reconciliation.TopDownReconciliator">API documentation</a>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MinTReconciliator</span></code> is a technique to perform “optimal” reconciliation, as detailed <a class="reference external" href="https://otexts.com/fpp3/reconciliation.html#the-mint-optimal-reconciliation-approach">here</a>. This transformer can work in a few different ways listed in the <a class="reference external" href="https://unit8co.github.io/darts/generated_api/darts.dataprocessing.transformers.reconciliation.html#darts.dataprocessing.transformers.reconciliation.MinTReconciliator">API Documentation</a>.</p></li>
+</ul>
+<p>Below, we use the <code class="docutils literal notranslate"><span class="pre">wls_val</span></code> variant of <code class="docutils literal notranslate"><span class="pre">MinTReconciliator</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reconciliator</span> <span class="o">=</span> <span class="n">MinTReconciliator</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;wls_val&quot;</span><span class="p">)</span>
+<span class="n">reconciliator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">reconcilied_preds</span> <span class="o">=</span> <span class="n">reconciliator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s now check whether the reconciled forecasts sum up as we expect:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_forecast_sums</span><span class="p">(</span><span class="n">reconcilied_preds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6a5dcd76efbd626a2b07976079afe913a081b25cfe3907bbd080e0ab95b2380c.png" src="../_images/6a5dcd76efbd626a2b07976079afe913a081b25cfe3907bbd080e0ab95b2380c.png" />
+</div>
+</div>
+<p>It looks good - and how about the MAE errors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">measure_mae</span><span class="p">(</span><span class="n">reconcilied_preds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean MAE on total: 4157.12
+mean MAE on reasons: 1298.21
+mean MAE on regions: 790.32
+mean MAE on (region, reason): 310.29
+mean MAE on (region, reason, city): 190.40
+</pre></div>
+</div>
+</div>
+</div>
+<p>Compared to before, the MAE slightly increased (e.g., on the total level), whereas it slightly decreased on some other more granular levels. This is typical of reconciliation: it can increase the error, but also decrease it in some cases.</p>
+</section>
+<section id="alternative-forecasting-components-independently">
+<h2>Alternative: Forecasting Components Independently<a class="headerlink" href="#alternative-forecasting-components-independently" title="Link to this heading">#</a></h2>
+<p>Above, we simply fit a single multivariate model on our multivariate series. This means that the forecasts for each dimension consumes the (lagged) values of all other dimensions. Below, for the sake of example, we repeat the experiment but using “local” models forecasting each component independently. We use a simple <code class="docutils literal notranslate"><span class="pre">Theta</span></code> model, and concatenate all the forecasts in a single multivariate <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">preds</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">component</span> <span class="ow">in</span> <span class="n">tourism_series</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">()</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">[</span><span class="n">component</span><span class="p">])</span>
+    <span class="n">preds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">val</span><span class="p">)))</span>
+
+<span class="n">pred</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">(</span><span class="n">preds</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s2">&quot;component&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>c:\Users\mi3se\AppData\Local\Programs\Python\Python310\lib\site-packages\statsmodels\tsa\holtwinters\model.py:918: ConvergenceWarning: Optimization failed to converge. Check mle_retvals.
+  warnings.warn(
+</pre></div>
+</div>
+</div>
+</div>
+<p>Let’s plot a few forecasts, and show the MAE errors:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">tourism_series</span><span class="p">[</span><span class="n">components_to_show</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">pred</span><span class="p">[</span><span class="n">components_to_show</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">measure_mae</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean MAE on total: 3294.38
+mean MAE on reasons: 1204.76
+mean MAE on regions: 818.18
+mean MAE on (region, reason): 329.39
+mean MAE on (region, reason, city): 195.16
+</pre></div>
+</div>
+<img alt="../_images/6eb3ed8c36723811ad63f4b5ca0947a16515904615d492a738d3b8fc56a4e3fc.png" src="../_images/6eb3ed8c36723811ad63f4b5ca0947a16515904615d492a738d3b8fc56a4e3fc.png" />
+</div>
+</div>
+<p>As expected, these forecasts don’t add up either:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_forecast_sums</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/25949552e8fae3a484bfd84a6856269cf71845f1b18ee10021edcda98c227dbb.png" src="../_images/25949552e8fae3a484bfd84a6856269cf71845f1b18ee10021edcda98c227dbb.png" />
+</div>
+</div>
+<p>Let’s make them add up using a <code class="docutils literal notranslate"><span class="pre">MinTReconciliator</span></code>:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">reconciliator</span> <span class="o">=</span> <span class="n">MinTReconciliator</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s2">&quot;wls_val&quot;</span><span class="p">)</span>
+<span class="n">reconciliator</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="n">reconcilied_preds</span> <span class="o">=</span> <span class="n">reconciliator</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+
+<span class="n">plot_forecast_sums</span><span class="p">(</span><span class="n">reconcilied_preds</span><span class="p">)</span>
+<span class="n">measure_mae</span><span class="p">(</span><span class="n">reconcilied_preds</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mean MAE on total: 3348.03
+mean MAE on reasons: 1215.69
+mean MAE on regions: 781.98
+mean MAE on (region, reason): 316.33
+mean MAE on (region, reason, city): 199.90
+</pre></div>
+</div>
+<img alt="../_images/ac1d31d45956ffe1b871741cbb712430a13f3d5a1aa067fdc8dbc7b8bb0c24be.png" src="../_images/ac1d31d45956ffe1b871741cbb712430a13f3d5a1aa067fdc8dbc7b8bb0c24be.png" />
+</div>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./pages"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="clustering/overview.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Overview</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="transfer-learning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Transfer Learning for Time Series Forecasting with Darts</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#loading-data">Loading Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-the-hierarchy">Inspecting the Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#encoding-the-hierarchy">Encoding the Hierarchy</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forecasting-using-a-multivariate-model">Forecasting Using a Multivariate Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reconciling-forecasts">Reconciling Forecasts</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#alternative-forecasting-components-independently">Alternative: Forecasting Components Independently</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Md Khairul Islam
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2023.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
