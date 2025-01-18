@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Hierarchical Reconciliation - Example on the Australian Tourism Dataset &#8212; Machine Learning for Time Series</title>
+    <title>Hierarchical Reconciliation - Australian Tourism Dataset &#8212; Machine Learning for Time Series</title>
   
   
   
@@ -63,7 +63,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'pages/dart-hierarchical-reconciliation';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Transfer Learning for Time Series Forecasting with Darts" href="transfer-learning.html" />
+    <link rel="next" title="Anomaly Detection in Darts" href="anomaly/darts-anomaly-detection.html" />
     <link rel="prev" title="Overview" href="clustering/overview.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -192,11 +192,19 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Hierarchical</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Hierarchical Reconciliation - Example on the Australian Tourism Dataset</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Hierarchical Reconciliation - Australian Tourism Dataset</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Anomaly Detection</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="anomaly/darts-anomaly-detection.html">Anomaly Detection in Darts</a></li>
+
+
+
+<li class="toctree-l1"><a class="reference internal" href="anomaly/anomaly-detection-kmeansscorer.html">Simple case: <code class="docutils literal notranslate"><span class="pre">KMeansScorer</span></code></a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Transfer Learning</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="transfer-learning.html">Transfer Learning for Time Series Forecasting with Darts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transfer-learning.html">Transfer Learning</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Conclusion</span></p>
 <ul class="nav bd-sidenav">
@@ -384,7 +392,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Hierarchical Reconciliation - Example on the Australian Tourism Dataset</h1>
+    <h1>Hierarchical Reconciliation - Australian Tourism Dataset</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -411,8 +419,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="hierarchical-reconciliation-example-on-the-australian-tourism-dataset">
-<h1>Hierarchical Reconciliation - Example on the Australian Tourism Dataset<a class="headerlink" href="#hierarchical-reconciliation-example-on-the-australian-tourism-dataset" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="hierarchical-reconciliation-australian-tourism-dataset">
+<h1>Hierarchical Reconciliation - Australian Tourism Dataset<a class="headerlink" href="#hierarchical-reconciliation-australian-tourism-dataset" title="Link to this heading">#</a></h1>
 <p>In this notebook we demonstrate hierarchical reconciliation. We will use the Australian tourism dataset (originally coming from <a class="reference external" href="https://robjhyndman.com/publications/hierarchical-tourism/">here</a>), which contains monthly tourism numbers, disaggrated by region, travel reason and city/non-city type of tourism.</p>
 <p>We will use techniques presented in Rob Hyndman’s book <a class="reference external" href="https://otexts.com/fpp3/hierarchical.html">here</a>, and we will see that reconciling forecasts can be done in a few lines of code using Darts.</p>
 <p>First, some imports:</p>
@@ -506,7 +514,7 @@
 </div>
 </div>
 <p>So overall our hierarchy looks as follows:</p>
-<p><img alt="image.png" src="pages/attachment:de74d4d1-1a95-41c4-9a21-99199060ad36.png" /></p>
+<p><img alt="image" src="../_images/Australian-tourism-hierarchy.jpg" /></p>
 </section>
 <section id="encoding-the-hierarchy">
 <h2>Encoding the Hierarchy<a class="headerlink" href="#encoding-the-hierarchy" title="Link to this heading">#</a></h2>
@@ -849,11 +857,11 @@ mean MAE on (region, reason, city): 199.90
       </div>
     </a>
     <a class="right-next"
-       href="transfer-learning.html"
+       href="anomaly/darts-anomaly-detection.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Transfer Learning for Time Series Forecasting with Darts</p>
+        <p class="prev-next-title">Anomaly Detection in Darts</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
