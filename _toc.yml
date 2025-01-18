@@ -20,10 +20,19 @@ parts:
 - caption: Forecasting
   chapters:
   - file: pages/forecasting/overview
+  - file: pages/forecasting/dart-Transformer-examples.ipynb
 
 - caption: Clustering
   chapters:
   - file: pages/clustering/overview
+
+- caption: Hierarchical
+  chapters:
+  - file: pages/dart-hierarchical-reconciliation.ipynb
+
+- caption: Transfer Learning
+  chapters:
+  - file: pages/transfer-learning.ipynb
 
 - caption: Conclusion
   chapters:
