@@ -30,8 +30,13 @@ parts:
   chapters:
   - file: pages/dart-hierarchical-reconciliation.ipynb
 
-- caption: Transfer Learning
+- caption: Anomaly Detection
   chapters:
+  - file: pages/anomaly/darts-anomaly-detection
+  - file: pages/anomaly/anomaly-detection-kmeansscorer
+
+- caption: Transfer Learning
+  chapters: 
   - file: pages/transfer-learning.ipynb
 
 - caption: Conclusion

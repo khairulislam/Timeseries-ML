@@ -14,6 +14,9 @@ Machine Learning hands on book for Time series data.
   - [Transformers](./pages/forecasting/dart-Transformer-examples.ipynb)
 - Clustering
   - [TimeSeriesKMeans](./pages/clustering/overview.ipynb)
+- Anomaly Detection
+  - [Taxi passengers in NY](./pages/anomaly/darts-anomaly-detection.ipynb)
+  - [KMeans-Scorer](./pages/anomaly/anomaly-detection-kmeansscorer.ipynb)
 - Hierarchical
   - [Hierarchical Reconciliation using Darts](./pages/dart-hierarchical-reconciliation.ipynb)
 - Transfer Learning
