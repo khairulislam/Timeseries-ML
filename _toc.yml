@@ -15,8 +15,8 @@ parts:
 
 - caption: Forecasting
   chapters:
-  - file: pages/forecasting/overview
-  - file: pages/forecasting/regression-sktime
+  - file: pages/forecasting/sktime-overview
+  - file: pages/forecasting/sktime-regression
   - file: pages/forecasting/dart-Transformer-examples.ipynb
   - file: pages/forecasting/dart-RegressionModel
 
